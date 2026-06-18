@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { Bed, Bath, MapPin, Square, Home } from 'lucide-react'
 import type { Property } from '@/lib/types'
 import { formatPrice, cn } from '@/lib/utils'
@@ -14,7 +13,7 @@ export default function PropertyCard({ property, featured }: PropertyCardProps) 
   const image = property.images?.[0] || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80'
 
   return (
-    <Link href={`/properties/${property.id}`}>
+    <a href={`/properties/${property.id}`} className="block">
       <div className={cn(
         "group bg-white rounded-2xl overflow-hidden card-shadow cursor-pointer",
         featured && "ring-2 ring-purple-400/50"
@@ -89,6 +88,6 @@ export default function PropertyCard({ property, featured }: PropertyCardProps) 
           </div>
         </div>
       </div>
-    </Link>
+    </a>
   )
 }

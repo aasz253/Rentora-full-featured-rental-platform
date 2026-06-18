@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { Home, Mail, Phone, MapPin } from 'lucide-react'
 
 export default function Footer() {
@@ -7,12 +6,12 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
+            <a href="/" className="flex items-center gap-2">
               <div className="gradient-bg p-2 rounded-lg">
                 <Home className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold text-white">Rentora</span>
-            </Link>
+            </a>
             <p className="text-sm leading-relaxed">
               Your trusted platform for finding the perfect rental home. Browse thousands of properties across the country.
             </p>
@@ -21,19 +20,19 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/" className="hover:text-white transition-colors">Home</Link></li>
-              <li><Link href="/#properties" className="hover:text-white transition-colors">Properties</Link></li>
-              <li><Link href="/auth/login" className="hover:text-white transition-colors">Landlord Portal</Link></li>
+              <li><a href="/" className="hover:text-white transition-colors">Home</a></li>
+              <li><a href="/#properties" className="hover:text-white transition-colors">Properties</a></li>
+              <li><a href="/auth/login" className="hover:text-white transition-colors">Landlord Portal</a></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-white font-semibold mb-4">Property Types</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/?type=house" className="hover:text-white transition-colors">Houses</Link></li>
-              <li><Link href="/?type=apartment" className="hover:text-white transition-colors">Apartments</Link></li>
-              <li><Link href="/?type=studio" className="hover:text-white transition-colors">Studios</Link></li>
-              <li><Link href="/?type=villa" className="hover:text-white transition-colors">Villas</Link></li>
+              <li><a href="/?type=house" className="hover:text-white transition-colors">Houses</a></li>
+              <li><a href="/?type=apartment" className="hover:text-white transition-colors">Apartments</a></li>
+              <li><a href="/?type=studio" className="hover:text-white transition-colors">Studios</a></li>
+              <li><a href="/?type=villa" className="hover:text-white transition-colors">Villas</a></li>
             </ul>
           </div>
 
@@ -61,8 +60,8 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Rentora. All rights reserved.
           </p>
           <div className="flex gap-6 text-xs text-gray-500">
-            <Link href="/" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="/" className="hover:text-white transition-colors">Terms of Service</Link>
+            <a href="/" className="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="/" className="hover:text-white transition-colors">Terms of Service</a>
           </div>
         </div>
       </div>

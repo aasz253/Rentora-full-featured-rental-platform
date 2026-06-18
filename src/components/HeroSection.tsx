@@ -1,7 +1,6 @@
 'use client'
 
 import { ArrowDown, Search } from 'lucide-react'
-import Link from 'next/link'
 
 export default function HeroSection() {
   return (
@@ -26,20 +25,20 @@ export default function HeroSection() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
+            <a
               href="#properties"
               className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3.5 rounded-full font-semibold text-base hover:opacity-90 transition-all shadow-lg shadow-purple-500/30 flex items-center gap-2"
             >
               <Search className="w-5 h-5" />
               Browse Properties
-            </Link>
-            <Link
+            </a>
+            <a
               href="/auth/register"
               className="bg-white/10 backdrop-blur-sm text-white px-8 py-3.5 rounded-full font-semibold text-base border border-white/20 hover:bg-white/20 transition-all flex items-center gap-2"
             >
               <ArrowDown className="w-5 h-5" />
               List Your Property
-            </Link>
+            </a>
           </div>
 
           <div className="mt-12 grid grid-cols-3 gap-8 max-w-lg mx-auto">

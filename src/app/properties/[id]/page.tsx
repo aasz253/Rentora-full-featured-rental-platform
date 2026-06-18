@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import Link from 'next/link'
 import {
   MapPin, Bed, Bath, Square, Calendar, ChevronLeft,
   ArrowLeft, Loader2, Home, Shield, CheckCircle, XCircle,
@@ -51,9 +50,9 @@ export default function PropertyDetailPage() {
         <Home className="w-16 h-16 text-gray-200 mx-auto mb-4" />
         <h2 className="text-xl font-bold text-gray-900 mb-2">Property Not Found</h2>
         <p className="text-gray-500 mb-6">The property you're looking for doesn't exist or has been removed.</p>
-        <Link href="/" className="gradient-bg text-white px-6 py-3 rounded-xl font-medium inline-flex items-center gap-2">
+        <a href="/" className="gradient-bg text-white px-6 py-3 rounded-xl font-medium inline-flex items-center gap-2">
           <ArrowLeft className="w-4 h-4" /> Back to Home
-        </Link>
+        </a>
       </div>
     )
   }
@@ -65,13 +64,13 @@ export default function PropertyDetailPage() {
   return (
     <div className="min-h-screen bg-gray-50/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <Link
+        <a
           href="/#properties"
           className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-purple-600 transition-colors mb-6"
         >
           <ChevronLeft className="w-4 h-4" />
           Back to properties
-        </Link>
+        </a>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
