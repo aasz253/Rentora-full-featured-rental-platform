@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/context/AuthContext'
+import ErrorBoundary from '@/components/ErrorBoundary'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import LiveChat from '@/components/LiveChat'
@@ -24,14 +25,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <VisitorTracker />
-          <PWARegister />
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <LiveChat />
+          <ErrorBoundary>
+            <VisitorTracker />
+            <PWARegister />
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+            <LiveChat />
+          </ErrorBoundary>
         </AuthProvider>
       </body>
     </html>
