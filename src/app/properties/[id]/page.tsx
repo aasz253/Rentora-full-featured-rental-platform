@@ -6,7 +6,7 @@ import Link from 'next/link'
 import {
   MapPin, Bed, Bath, Square, Calendar, ChevronLeft,
   ArrowLeft, Loader2, Home, Shield, CheckCircle, XCircle,
-  Star, Store, Bus, School,
+  Star, Store, Bus, School, GraduationCap,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase'
 import { formatPrice, formatDate } from '@/lib/utils'
@@ -184,6 +184,20 @@ export default function PropertyDetailPage() {
                       </span>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {property.is_student_housing && (
+                <div className="mb-6 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-4 border border-purple-100">
+                  <div className="flex items-center gap-2 mb-1">
+                    <GraduationCap className="w-5 h-5 text-purple-600" />
+                    <h2 className="text-sm font-semibold text-gray-900">Student Housing</h2>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    {property.near_campus && 'Near campus. '}
+                    {property.university_area && `Serving ${property.university_area}. `}
+                    Affordable student-friendly rental. Contact the landlord for student discounts.
+                  </p>
                 </div>
               )}
 

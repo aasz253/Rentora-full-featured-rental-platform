@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Menu, X, Home, LayoutDashboard, LogOut, Building2, Shield, UserCog, User } from 'lucide-react'
+import { Menu, X, Home, LayoutDashboard, LogOut, Building2, Shield, UserCog, User, GraduationCap } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { cn } from '@/lib/utils'
 
@@ -30,6 +30,10 @@ export default function Navbar() {
             </a>
             <a href="/#properties" className="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">
               Properties
+            </a>
+            <a href="/student" className="text-sm font-medium text-gray-600 hover:text-purple-600 transition-colors flex items-center gap-1">
+              <GraduationCap className="w-4 h-4" />
+              Students
             </a>
             {isLoggedIn && isAdmin && (
               <a
@@ -101,6 +105,14 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)}
           >
             Properties
+          </a>
+          <a
+            href="/student"
+            className="block text-sm font-medium text-gray-600 py-2"
+            onClick={() => setMobileOpen(false)}
+          >
+            <GraduationCap className="w-4 h-4 inline mr-1" />
+            Students
           </a>
           {isLoggedIn && isAdmin && (
             <a

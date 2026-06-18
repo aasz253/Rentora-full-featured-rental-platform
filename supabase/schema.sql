@@ -114,7 +114,10 @@ CREATE TABLE IF NOT EXISTS properties (
   landlord_id UUID REFERENCES profiles(id),
   title TEXT NOT NULL,
   description TEXT NOT NULL,
-  property_type TEXT NOT NULL CHECK (property_type IN ('house','apartment','condo','studio','villa')),
+  property_type TEXT NOT NULL CHECK (property_type IN ('house','apartment','condo','studio','villa','dorm','hostel')),
+  is_student_housing BOOLEAN DEFAULT FALSE,
+  near_campus BOOLEAN DEFAULT FALSE,
+  university_area TEXT,
   price DECIMAL(10,2) NOT NULL,
   address TEXT,
   city TEXT,
@@ -403,6 +406,32 @@ ALTER TABLE rent_payments ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Anyone insert rent" ON rent_payments FOR INSERT WITH CHECK (TRUE);
 CREATE POLICY "Admin view all rent" ON rent_payments FOR SELECT USING (
   EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+);
+
+-- === ROOMMATE REQUESTS ===
+DROP TABLE IF EXISTS roommate_requests CASCADE;
+CREATE TABLE IF NOT EXISTS roommate_requests (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  user_id UUID REFERENCES profiles(id),
+  property_id UUID REFERENCES properties(id),
+  full_name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  university TEXT,
+  budget_min DECIMAL(10,2),
+  budget_max DECIMAL(10,2),
+  move_in_date DATE,
+  gender_preference TEXT,
+  bio TEXT,
+  looking_for_roommates BOOLEAN DEFAULT TRUE,
+  status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open','matched','closed')),
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE roommate_requests ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone view roommate_requests" ON roommate_requests FOR SELECT USING (TRUE);
+CREATE POLICY "Anyone insert roommate_requests" ON roommate_requests FOR INSERT WITH CHECK (TRUE);
+CREATE POLICY "Owner update roommate_requests" ON roommate_requests FOR UPDATE USING (
+  auth.uid() = user_id OR EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
 );
 
 -- === INDEXES ===

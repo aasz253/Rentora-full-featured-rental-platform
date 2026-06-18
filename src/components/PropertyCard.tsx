@@ -28,10 +28,15 @@ export default function PropertyCard({ property, featured }: PropertyCardProps) 
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-          <div className="absolute top-3 left-3 flex gap-2">
+          <div className="absolute top-3 left-3 flex gap-2 flex-wrap">
             <span className="bg-white/95 backdrop-blur-sm text-gray-800 px-3 py-1 rounded-full text-xs font-semibold capitalize">
               {property.property_type}
             </span>
+            {property.is_student_housing && (
+              <span className="bg-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                Student
+              </span>
+            )}
             {property.availability === 'available' ? (
               <span className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
                 Available

@@ -19,6 +19,8 @@ const propertyTypes: { value: PropertyType; label: string }[] = [
   { value: 'condo', label: 'Condo' },
   { value: 'studio', label: 'Studio' },
   { value: 'villa', label: 'Villa' },
+  { value: 'dorm', label: 'Dorm (Shared)' },
+  { value: 'hostel', label: 'Hostel' },
 ]
 
 const commonAmenities = [
@@ -48,6 +50,9 @@ export default function PropertyForm({ property }: PropertyFormProps) {
   const [images, setImages] = useState<string[]>(property?.images || [])
   const [videoTourUrl, setVideoTourUrl] = useState(property?.video_tour_url || '')
   const [matterportEmbed, setMatterportEmbed] = useState(property?.matterport_embed || '')
+  const [isStudentHousing, setIsStudentHousing] = useState(property?.is_student_housing || false)
+  const [nearCampus, setNearCampus] = useState(property?.near_campus || false)
+  const [universityArea, setUniversityArea] = useState(property?.university_area || '')
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>(property?.amenities || [])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -97,6 +102,9 @@ export default function PropertyForm({ property }: PropertyFormProps) {
       matterport_embed: matterportEmbed || null,
       amenities: selectedAmenities,
       availability: 'available',
+      is_student_housing: isStudentHousing,
+      near_campus: nearCampus,
+      university_area: universityArea || null,
     }
 
     if (isEditing && property) {
@@ -250,6 +258,31 @@ export default function PropertyForm({ property }: PropertyFormProps) {
             placeholder="https://my.matterport.com/show/?m=..."
             className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-400/30 focus:border-purple-400 transition-all" />
           <p className="text-xs text-gray-400 mt-1">Paste Matterport share link for 3D virtual tour</p>
+        </div>
+      </div>
+
+      <div className="bg-purple-50 rounded-xl p-4 border border-purple-100">
+        <label className="block text-sm font-medium text-gray-700 mb-3">Student Housing</label>
+        <div className="flex flex-wrap items-center gap-4">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" checked={isStudentHousing} onChange={e => setIsStudentHousing(e.target.checked)}
+              className="w-4 h-4 text-purple-600 rounded border-gray-300 focus:ring-purple-500" />
+            <span className="text-sm text-gray-700">This is student housing</span>
+          </label>
+          {isStudentHousing && (
+            <>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked={nearCampus} onChange={e => setNearCampus(e.target.checked)}
+                  className="w-4 h-4 text-purple-600 rounded border-gray-300 focus:ring-purple-500" />
+                <span className="text-sm text-gray-700">Near campus</span>
+              </label>
+              <div className="flex-1 min-w-[200px]">
+                <input type="text" value={universityArea} onChange={e => setUniversityArea(e.target.value)}
+                  placeholder="University area (e.g. University of Nairobi)"
+                  className="w-full px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-400/30 focus:border-purple-400 transition-all" />
+              </div>
+            </>
+          )}
         </div>
       </div>
 

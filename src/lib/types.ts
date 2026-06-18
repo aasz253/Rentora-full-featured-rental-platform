@@ -16,7 +16,7 @@ export interface Profile {
   updated_at: string;
 }
 
-export type PropertyType = 'house' | 'apartment' | 'condo' | 'studio' | 'villa';
+export type PropertyType = 'house' | 'apartment' | 'condo' | 'studio' | 'villa' | 'dorm' | 'hostel';
 export type Availability = 'available' | 'booked';
 
 export interface Property {
@@ -44,6 +44,9 @@ export interface Property {
   matterport_embed: string | null;
   neighborhood_score: number | null;
   featured: boolean;
+  is_student_housing: boolean;
+  near_campus: boolean;
+  university_area: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -81,6 +84,7 @@ export interface PropertyFilters {
   minPrice?: number;
   maxPrice?: number;
   propertyType?: PropertyType;
+  isStudentHousing?: boolean;
 }
 
 export interface VisitorRecord {
@@ -210,4 +214,23 @@ export interface DashboardStats {
   availableProperties: number;
   bookedProperties: number;
   bannedLandlords: number;
+}
+
+export interface RoommateRequest {
+  id: string;
+  user_id: string | null;
+  property_id: string | null;
+  full_name: string;
+  email: string;
+  phone: string;
+  university: string | null;
+  budget_min: number | null;
+  budget_max: number | null;
+  move_in_date: string | null;
+  gender_preference: string | null;
+  bio: string | null;
+  looking_for_roommates: boolean;
+  status: 'open' | 'matched' | 'closed';
+  created_at: string;
+  properties?: Property;
 }

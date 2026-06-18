@@ -13,12 +13,24 @@ export function generateBookingReference(): string {
 }
 
 export function formatPrice(price: number): string {
-  return new Intl.NumberFormat('en-US', {
+  const currency = process.env.NEXT_PUBLIC_CURRENCY || 'KES'
+  return new Intl.NumberFormat('en-KE', {
     style: 'currency',
-    currency: 'USD',
+    currency,
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(price)
+}
+
+export function formatPricePerMonth(price: number): string {
+  const currency = process.env.NEXT_PUBLIC_CURRENCY || 'KES'
+  const formatted = new Intl.NumberFormat('en-KE', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price)
+  return `${formatted}/mo`
 }
 
 export function formatDate(date: string): string {

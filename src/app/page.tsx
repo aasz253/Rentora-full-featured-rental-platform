@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import dynamic from 'next/dynamic'
-import { Loader2, Home, BarChart3, X, CheckSquare } from 'lucide-react'
+import { Loader2, Home, BarChart3, X, CheckSquare, GraduationCap } from 'lucide-react'
 import HeroSection from '@/components/HeroSection'
 import SearchBar from '@/components/SearchBar'
 import PropertyCard from '@/components/PropertyCard'
@@ -22,6 +22,7 @@ export default function HomePage() {
   const [showCompare, setShowCompare] = useState(false)
   const [filters, setFilters] = useState<PropertyFilters>({})
   const [mapFilteredIds, setMapFilteredIds] = useState<string[] | null>(null)
+  const [studentOnly, setStudentOnly] = useState(false)
   const { user } = useAuth()
   const supabase = createClient()
 
@@ -57,9 +58,12 @@ export default function HomePage() {
     if (newFilters.maxPrice !== undefined) {
       filtered = filtered.filter((p) => p.price <= newFilters.maxPrice!)
     }
+    if (studentOnly) {
+      filtered = filtered.filter((p) => p.is_student_housing === true)
+    }
 
     setFilteredProperties(filtered)
-  }, [properties])
+  }, [properties, studentOnly])
 
   const handleMapFilter = useCallback((ids: string[]) => {
     setMapFilteredIds(ids)
@@ -80,6 +84,38 @@ export default function HomePage() {
   return (
     <div>
       <HeroSection />
+
+      {properties.filter(p => p.is_student_housing).length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="flex items-center gap-3 mb-8">
+            <GraduationCap className="w-7 h-7 text-purple-600" />
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                Student Housing
+              </h2>
+              <p className="text-gray-500 text-sm">
+                Affordable rentals near university campuses
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {properties.filter(p => p.is_student_housing).slice(0, 6).map((property, i) => (
+              <div key={property.id} className="animate-fade-in" style={{ animationDelay: `${i * 80}ms` }}>
+                <PropertyCard property={property} />
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <button
+              onClick={() => { setStudentOnly(true); document.getElementById('properties')?.scrollIntoView({ behavior: 'smooth' }) }}
+              className="gradient-bg text-white px-6 py-3 rounded-xl font-medium inline-flex items-center gap-2 hover:opacity-90 transition-all"
+            >
+              <GraduationCap className="w-4 h-4" />
+              View All Student Housing
+            </button>
+          </div>
+        </section>
+      )}
 
       <section id="properties" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
@@ -105,8 +141,21 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="mb-8">
-          <SearchBar onSearch={handleSearch} />
+        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          <div className="flex-1">
+            <SearchBar onSearch={handleSearch} />
+          </div>
+          <button
+            onClick={() => setStudentOnly(!studentOnly)}
+            className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium text-sm transition-all border ${
+              studentOnly
+                ? 'bg-purple-600 text-white border-purple-600 shadow-md'
+                : 'bg-white text-gray-700 border-gray-200 hover:border-purple-300'
+            }`}
+          >
+            <GraduationCap className="w-4 h-4" />
+            Student Housing
+          </button>
         </div>
 
         <div className="mb-8">
