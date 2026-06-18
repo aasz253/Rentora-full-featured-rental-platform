@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Menu, X, Home, LayoutDashboard, LogOut, Building2, Shield, UserCog, User, GraduationCap } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { cn } from '@/lib/utils'
@@ -17,47 +18,47 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <a href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <div className="gradient-bg p-2 rounded-lg">
               <Home className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold gradient-text">Rentora</span>
-          </a>
+          </Link>
 
           <div className="hidden md:flex items-center gap-6">
-            <a href="/" className="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">
+            <Link href="/" className="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">
               Home
-            </a>
-            <a href="/#properties" className="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">
+            </Link>
+            <Link href="/#properties" className="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">
               Properties
-            </a>
-            <a href="/student" className="text-sm font-medium text-gray-600 hover:text-purple-600 transition-colors flex items-center gap-1">
+            </Link>
+            <Link href="/student" className="text-sm font-medium text-gray-600 hover:text-purple-600 transition-colors flex items-center gap-1">
               <GraduationCap className="w-4 h-4" />
               Students
-            </a>
+            </Link>
             {isLoggedIn && isAdmin && (
-              <a
+              <Link
                 href="/admin"
                 className="text-sm font-medium text-purple-600 hover:text-purple-700 transition-colors flex items-center gap-1.5"
               >
                 <Shield className="w-4 h-4" />
                 Admin Panel
-              </a>
+              </Link>
             )}
             {isLoggedIn && isLandlord && (
-              <a
+              <Link
                 href="/dashboard"
                 className="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors flex items-center gap-1.5"
               >
                 <LayoutDashboard className="w-4 h-4" />
                 Dashboard
-              </a>
+              </Link>
             )}
             {isLoggedIn && (
-              <a href="/tenant" className="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors flex items-center gap-1.5">
+              <Link href="/tenant" className="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors flex items-center gap-1.5">
                 <User className="w-4 h-4" />
                 My Rentals
-              </a>
+              </Link>
             )}
             {isLoggedIn ? (
               <>
@@ -79,13 +80,13 @@ export default function Navbar() {
                 </button>
               </>
             ) : (
-              <a
+              <Link
                 href="/auth/login"
                 className="gradient-bg text-white px-5 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-all flex items-center gap-2"
               >
                 <Building2 className="w-4 h-4" />
                 Sign In
-              </a>
+              </Link>
             )}
           </div>
 
@@ -103,47 +104,47 @@ export default function Navbar() {
         mobileOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
       )}>
         <div className="px-4 py-4 space-y-3 border-t border-gray-100">
-          <a
+          <Link
             href="/"
             className="block text-sm font-medium text-gray-600 py-2"
             onClick={() => setMobileOpen(false)}
           >
             Home
-          </a>
-          <a
+          </Link>
+          <Link
             href="/#properties"
             className="block text-sm font-medium text-gray-600 py-2"
             onClick={() => setMobileOpen(false)}
           >
             Properties
-          </a>
-          <a
+          </Link>
+          <Link
             href="/student"
             className="block text-sm font-medium text-gray-600 py-2"
             onClick={() => setMobileOpen(false)}
           >
             <GraduationCap className="w-4 h-4 inline mr-1" />
             Students
-          </a>
+          </Link>
           {isLoggedIn && isAdmin && (
-            <a
+            <Link
               href="/admin"
               className="block text-sm font-medium text-purple-600 py-2"
               onClick={() => setMobileOpen(false)}
             >
               <Shield className="w-4 h-4 inline mr-1" />
               Admin Panel
-            </a>
+            </Link>
           )}
           {isLoggedIn && isLandlord && (
-            <a
+            <Link
               href="/dashboard"
               className="block text-sm font-medium text-gray-600 py-2"
               onClick={() => setMobileOpen(false)}
             >
               <LayoutDashboard className="w-4 h-4 inline mr-1" />
               Dashboard
-            </a>
+            </Link>
           )}
           {isLoggedIn ? (
             <>
@@ -165,13 +166,13 @@ export default function Navbar() {
               </button>
             </>
           ) : (
-            <a
+            <Link
               href="/auth/login"
               className="block gradient-bg text-white px-5 py-2.5 rounded-full text-sm font-semibold text-center"
               onClick={() => setMobileOpen(false)}
             >
               Sign In
-            </a>
+            </Link>
           )}
         </div>
       </div>
