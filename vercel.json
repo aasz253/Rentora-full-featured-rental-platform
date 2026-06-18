@@ -8,25 +8,5 @@
       "path": "/api/send-alerts",
       "schedule": "0 0 * * *"
     }
-  ],
-  "env": {
-    "NEXT_PUBLIC_SUPABASE_URL": "@supabase_url",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase_anon_key",
-    "SITE_URL": "https://rentora.vercel.app",
-    "OPENROUTER_API_KEY": "@openrouter_api_key",
-    "MPESA_CONSUMER_KEY": "@mpesa_consumer_key",
-    "MPESA_CONSUMER_SECRET": "@mpesa_consumer_secret",
-    "MPESA_PASSKEY": "@mpesa_passkey",
-    "MPESA_SHORTCODE": "174379",
-    "MPESA_ENV": "sandbox",
-    "PAYPAL_CLIENT_ID": "@paypal_client_id",
-    "PAYPAL_CLIENT_SECRET": "@paypal_client_secret",
-    "PAYPAL_ENV": "sandbox",
-    "RESEND_API_KEY": "@resend_api_key",
-    "BANK_NAME": "Chase Bank",
-    "BANK_ACCOUNT_NAME": "Rentora Holdings Ltd",
-    "BANK_ACCOUNT_NUMBER": "1234567890",
-    "BANK_BRANCH_CODE": "010010",
-    "BANK_SWIFT_CODE": "CHASUS33"
-  }
+  ]
 }
