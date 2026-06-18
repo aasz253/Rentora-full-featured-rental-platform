@@ -1,14 +1,16 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import dynamic from 'next/dynamic'
 import { Loader2, Home, BarChart3, X, CheckSquare } from 'lucide-react'
 import HeroSection from '@/components/HeroSection'
 import SearchBar from '@/components/SearchBar'
 import PropertyCard from '@/components/PropertyCard'
 import CompareModal from '@/components/CompareTool'
 import SavedSearchBar from '@/components/SavedSearchBar'
-import PolygonMapSearch from '@/components/MapSearch'
 import { useAuth } from '@/context/AuthContext'
+
+const PolygonMapSearch = dynamic(() => import('@/components/MapSearch'), { ssr: false })
 import { createClient } from '@/lib/supabase'
 import type { Property, PropertyFilters } from '@/lib/types'
 
