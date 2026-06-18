@@ -60,13 +60,24 @@ export default function Navbar() {
               </a>
             )}
             {isLoggedIn ? (
-              <button
-                onClick={signOut}
-                className="text-sm font-medium text-gray-600 hover:text-red-500 transition-colors flex items-center gap-1.5"
-              >
-                <LogOut className="w-4 h-4" />
-                Sign Out
-              </button>
+              <>
+                <div className="flex items-center gap-2 border-r border-gray-200 pr-4">
+                  <div className="w-7 h-7 rounded-full gradient-bg flex items-center justify-center">
+                    <User className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xs font-semibold text-gray-900 leading-tight">{profile?.full_name || 'User'}</p>
+                    <p className="text-[10px] text-gray-500 capitalize leading-tight">{profile?.role}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={signOut}
+                  className="text-sm font-medium text-gray-600 hover:text-red-500 transition-colors flex items-center gap-1.5"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </button>
+              </>
             ) : (
               <a
                 href="/auth/login"
@@ -135,13 +146,24 @@ export default function Navbar() {
             </a>
           )}
           {isLoggedIn ? (
-            <button
-              onClick={() => { signOut(); setMobileOpen(false) }}
-              className="block text-sm font-medium text-red-500 py-2 w-full text-left"
-            >
-              <LogOut className="w-4 h-4 inline mr-1" />
-              Sign Out
-            </button>
+            <>
+              <div className="flex items-center gap-2 py-2 border-b border-gray-100 mb-2">
+                <div className="w-8 h-8 rounded-full gradient-bg flex items-center justify-center">
+                  <User className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">{profile?.full_name || 'User'}</p>
+                  <p className="text-xs text-gray-500 capitalize">{profile?.role}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => { signOut(); setMobileOpen(false) }}
+                className="block text-sm font-medium text-red-500 py-2 w-full text-left"
+              >
+                <LogOut className="w-4 h-4 inline mr-1" />
+                Sign Out
+              </button>
+            </>
           ) : (
             <a
               href="/auth/login"
