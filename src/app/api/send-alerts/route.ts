@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createServerSupabase } from '@/lib/supabase'
+import { createServerSupabase } from '@/lib/supabase-server'
 import { sendEmail, alertNotificationHtml } from '@/lib/email'
 
 export async function GET() {
