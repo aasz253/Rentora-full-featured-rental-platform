@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import {
   MapPin, Bed, Bath, Square, Calendar, ChevronLeft,
@@ -18,11 +18,16 @@ import MaintenanceForm from '@/components/MaintenanceForm'
 
 export default function PropertyDetailPage() {
   const params = useParams()
+  const searchParams = useSearchParams()
   const [property, setProperty] = useState<Property | null>(null)
   const [loading, setLoading] = useState(true)
   const [showBooking, setShowBooking] = useState(false)
   const [currentImage, setCurrentImage] = useState(0)
   const supabase = createClient()
+
+  useEffect(() => {
+    if (searchParams?.get('book') === '1') setShowBooking(true)
+  }, [searchParams])
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -255,21 +260,20 @@ export default function PropertyDetailPage() {
               </div>
 
               {property.availability === 'available' ? (
-                <button
-                  onClick={() => setShowBooking(true)}
+                <a
+                  href={`/properties/${property.id}?book=1`}
                   className="w-full gradient-bg text-white py-3.5 rounded-xl font-semibold hover:opacity-90 transition-all shadow-lg shadow-purple-200 flex items-center justify-center gap-2"
                 >
                   <Calendar className="w-4 h-4" />
                   Book Now
-                </button>
+                </a>
               ) : (
-                <button
-                  disabled
+                <span
                   className="w-full bg-gray-200 text-gray-500 py-3.5 rounded-xl font-semibold cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   <XCircle className="w-4 h-4" />
                   Currently Booked
-                </button>
+                </span>
               )}
 
               <div className="mt-4">
