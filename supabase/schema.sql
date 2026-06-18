@@ -1,8 +1,87 @@
 -- Rentora Complete Schema
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- Safe re-run: drop dependent objects first (order matters for FKs)
+DROP POLICY IF EXISTS "Users view own profile" ON profiles;
+DROP POLICY IF EXISTS "Users update own profile" ON profiles;
+DROP POLICY IF EXISTS "Anyone insert profile" ON profiles;
+DROP POLICY IF EXISTS "Admins view all" ON profiles;
+DROP POLICY IF EXISTS "Admins update any" ON profiles;
+DROP POLICY IF EXISTS "Anyone view properties" ON properties;
+DROP POLICY IF EXISTS "Landlords insert" ON properties;
+DROP POLICY IF EXISTS "Owners/admins update" ON properties;
+DROP POLICY IF EXISTS "Owners/admins delete" ON properties;
+DROP POLICY IF EXISTS "Anyone view bookings" ON bookings;
+DROP POLICY IF EXISTS "Anyone insert booking" ON bookings;
+DROP POLICY IF EXISTS "Admins update bookings" ON bookings;
+DROP POLICY IF EXISTS "Anyone view messages" ON chat_messages;
+DROP POLICY IF EXISTS "Anyone insert messages" ON chat_messages;
+DROP POLICY IF EXISTS "Anyone insert" ON visitor_tracking;
+DROP POLICY IF EXISTS "Admins view" ON visitor_tracking;
+DROP POLICY IF EXISTS "Users manage own saved searches" ON saved_searches;
+DROP POLICY IF EXISTS "Anyone view reviews" ON reviews;
+DROP POLICY IF EXISTS "Anyone insert reviews" ON reviews;
+DROP POLICY IF EXISTS "Admins update reviews" ON reviews;
+DROP POLICY IF EXISTS "Anyone view maintenance" ON maintenance_requests;
+DROP POLICY IF EXISTS "Anyone insert maintenance" ON maintenance_requests;
+DROP POLICY IF EXISTS "Admins update maintenance" ON maintenance_requests;
+DROP POLICY IF EXISTS "Landlords update own" ON maintenance_requests;
+DROP POLICY IF EXISTS "Users view own referrals" ON referrals;
+DROP POLICY IF EXISTS "Users insert referrals" ON referrals;
+DROP POLICY IF EXISTS "Users view own notifications" ON notifications;
+DROP POLICY IF EXISTS "Users update own notifications" ON notifications;
+DROP POLICY IF EXISTS "Anyone insert payments" ON payments;
+DROP POLICY IF EXISTS "Users view own payments" ON payments;
+DROP POLICY IF EXISTS "Admins view all payments" ON payments;
+DROP POLICY IF EXISTS "Admins update payments" ON payments;
+DROP POLICY IF EXISTS "Anyone insert" ON tenant_screenings;
+DROP POLICY IF EXISTS "Admin view all" ON tenant_screenings;
+DROP POLICY IF EXISTS "Anyone insert leases" ON leases;
+DROP POLICY IF EXISTS "Admin view all" ON leases;
+DROP POLICY IF EXISTS "Admin update" ON leases;
+DROP POLICY IF EXISTS "Anyone insert rent" ON rent_payments;
+DROP POLICY IF EXISTS "Admin view all rent" ON rent_payments;
+
+DROP TRIGGER IF EXISTS update_properties_updated_at ON properties;
+DROP TRIGGER IF EXISTS update_profiles_updated_at ON profiles;
+DROP TRIGGER IF EXISTS generate_referral_code_trigger ON profiles;
+
+DROP INDEX IF EXISTS idx_properties_location;
+DROP INDEX IF EXISTS idx_properties_price;
+DROP INDEX IF EXISTS idx_properties_type;
+DROP INDEX IF EXISTS idx_properties_availability;
+DROP INDEX IF EXISTS idx_properties_city;
+DROP INDEX IF EXISTS idx_bookings_property;
+DROP INDEX IF EXISTS idx_bookings_email;
+DROP INDEX IF EXISTS idx_bookings_ref;
+DROP INDEX IF EXISTS idx_chat_messages_created;
+DROP INDEX IF EXISTS idx_visitor_tracking_id;
+DROP INDEX IF EXISTS idx_visitor_tracking_time;
+DROP INDEX IF EXISTS idx_profiles_banned;
+DROP INDEX IF EXISTS idx_profiles_referral;
+DROP INDEX IF EXISTS idx_reviews_property;
+DROP INDEX IF EXISTS idx_maintenance_property;
+DROP INDEX IF EXISTS idx_notifications_user;
+DROP INDEX IF EXISTS idx_saved_searches_user;
+
+-- Drop tables for clean re-run (order respects FK constraints)
+DROP TABLE IF EXISTS rent_payments CASCADE;
+DROP TABLE IF EXISTS leases CASCADE;
+DROP TABLE IF EXISTS tenant_screenings CASCADE;
+DROP TABLE IF EXISTS payments CASCADE;
+DROP TABLE IF EXISTS notifications CASCADE;
+DROP TABLE IF EXISTS referrals CASCADE;
+DROP TABLE IF EXISTS maintenance_requests CASCADE;
+DROP TABLE IF EXISTS reviews CASCADE;
+DROP TABLE IF EXISTS saved_searches CASCADE;
+DROP TABLE IF EXISTS visitor_tracking CASCADE;
+DROP TABLE IF EXISTS chat_messages CASCADE;
+DROP TABLE IF EXISTS bookings CASCADE;
+DROP TABLE IF EXISTS properties CASCADE;
+DROP TABLE IF EXISTS profiles CASCADE;
+
 -- === PROFILES ===
-CREATE TABLE profiles (
+CREATE TABLE IF NOT EXISTS profiles (
   id UUID REFERENCES auth.users(id) PRIMARY KEY,
   full_name TEXT NOT NULL,
   phone TEXT,
@@ -30,7 +109,7 @@ CREATE POLICY "Admins update any" ON profiles FOR UPDATE USING (
 );
 
 -- === PROPERTIES ===
-CREATE TABLE properties (
+CREATE TABLE IF NOT EXISTS properties (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   landlord_id UUID REFERENCES profiles(id),
   title TEXT NOT NULL,
@@ -72,7 +151,7 @@ CREATE POLICY "Owners/admins delete" ON properties FOR DELETE USING (
 );
 
 -- === BOOKINGS ===
-CREATE TABLE bookings (
+CREATE TABLE IF NOT EXISTS bookings (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   property_id UUID REFERENCES properties(id) NOT NULL,
   tenant_id UUID REFERENCES profiles(id),
@@ -98,7 +177,7 @@ CREATE POLICY "Admins update bookings" ON bookings FOR UPDATE USING (
 );
 
 -- === CHAT MESSAGES ===
-CREATE TABLE chat_messages (
+CREATE TABLE IF NOT EXISTS chat_messages (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   sender_name TEXT NOT NULL,
   sender_email TEXT,
@@ -112,7 +191,7 @@ CREATE POLICY "Anyone view messages" ON chat_messages FOR SELECT USING (TRUE);
 CREATE POLICY "Anyone insert messages" ON chat_messages FOR INSERT WITH CHECK (TRUE);
 
 -- === VISITOR TRACKING ===
-CREATE TABLE visitor_tracking (
+CREATE TABLE IF NOT EXISTS visitor_tracking (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   visitor_id TEXT NOT NULL,
   page_url TEXT NOT NULL,
@@ -128,7 +207,7 @@ CREATE POLICY "Admins view" ON visitor_tracking FOR SELECT USING (
 );
 
 -- === SAVED SEARCHES ===
-CREATE TABLE saved_searches (
+CREATE TABLE IF NOT EXISTS saved_searches (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id UUID REFERENCES profiles(id) NOT NULL,
   search_params JSONB NOT NULL,
@@ -141,7 +220,7 @@ ALTER TABLE saved_searches ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users manage own saved searches" ON saved_searches FOR ALL USING (auth.uid() = user_id);
 
 -- === REVIEWS ===
-CREATE TABLE reviews (
+CREATE TABLE IF NOT EXISTS reviews (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   property_id UUID REFERENCES properties(id) NOT NULL,
   user_id UUID REFERENCES profiles(id),
@@ -163,7 +242,7 @@ CREATE POLICY "Admins update reviews" ON reviews FOR UPDATE USING (
 );
 
 -- === MAINTENANCE REQUESTS ===
-CREATE TABLE maintenance_requests (
+CREATE TABLE IF NOT EXISTS maintenance_requests (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   property_id UUID REFERENCES properties(id) NOT NULL,
   tenant_id UUID REFERENCES profiles(id),
@@ -189,7 +268,7 @@ CREATE POLICY "Landlords update own" ON maintenance_requests FOR UPDATE USING (
 );
 
 -- === REFERRALS ===
-CREATE TABLE referrals (
+CREATE TABLE IF NOT EXISTS referrals (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   referrer_id UUID REFERENCES profiles(id) NOT NULL,
   referee_email TEXT NOT NULL,
@@ -205,7 +284,7 @@ CREATE POLICY "Users view own referrals" ON referrals FOR SELECT USING (auth.uid
 CREATE POLICY "Users insert referrals" ON referrals FOR INSERT WITH CHECK (auth.uid() = referrer_id);
 
 -- === NOTIFICATIONS ===
-CREATE TABLE notifications (
+CREATE TABLE IF NOT EXISTS notifications (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   user_id UUID REFERENCES profiles(id),
   type TEXT NOT NULL CHECK (type IN ('booking','review','maintenance','referral','alert')),
@@ -221,7 +300,7 @@ CREATE POLICY "Users view own notifications" ON notifications FOR SELECT USING (
 CREATE POLICY "Users update own notifications" ON notifications FOR UPDATE USING (auth.uid() = user_id);
 
 -- === PAYMENTS ===
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS payments (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   booking_id UUID REFERENCES bookings(id) NOT NULL,
   amount DECIMAL(10,2) NOT NULL,
@@ -252,7 +331,7 @@ CREATE POLICY "Admins update payments" ON payments FOR UPDATE USING (
 );
 
 -- === TENANT SCREENING ===
-CREATE TABLE tenant_screenings (
+CREATE TABLE IF NOT EXISTS tenant_screenings (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   booking_id UUID REFERENCES bookings(id) NOT NULL,
   full_name TEXT NOT NULL,
@@ -277,7 +356,7 @@ CREATE POLICY "Admin view all" ON tenant_screenings FOR SELECT USING (
 );
 
 -- === DIGITAL LEASES ===
-CREATE TABLE leases (
+CREATE TABLE IF NOT EXISTS leases (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   booking_id UUID REFERENCES bookings(id) NOT NULL,
   lease_pdf_url TEXT,
@@ -307,7 +386,7 @@ CREATE POLICY "Admin update" ON leases FOR UPDATE USING (
 );
 
 -- === RENT PAYMENTS ===
-CREATE TABLE rent_payments (
+CREATE TABLE IF NOT EXISTS rent_payments (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
   lease_id UUID REFERENCES leases(id) NOT NULL,
   booking_id UUID REFERENCES bookings(id) NOT NULL,
