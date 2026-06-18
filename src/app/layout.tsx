@@ -23,6 +23,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preload" as="image" href="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1600&q=75" />
+      </head>
       <body className={inter.className}>
         <AuthProvider>
           <ErrorBoundary>

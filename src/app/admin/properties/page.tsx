@@ -117,6 +117,10 @@ export default function AdminPropertiesPage() {
                         src={property.images?.[0] || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=100&q=60'}
                         alt=""
                         className="w-10 h-10 rounded-lg object-cover"
+                        loading="lazy"
+                        decoding="async"
+                        width={40}
+                        height={40}
                       />
                       <span className="font-medium text-gray-900 truncate max-w-[200px]">{property.title}</span>
                     </div>

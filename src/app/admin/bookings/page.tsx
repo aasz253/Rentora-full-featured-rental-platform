@@ -1,14 +1,18 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Calendar, Loader2, Search, Mail, Phone, ExternalLink } from 'lucide-react'
+import { Calendar, Loader2, Search, Mail, Phone, ExternalLink, User } from 'lucide-react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase'
-import { formatPrice, formatDate } from '@/lib/utils'
+import { formatPrice } from '@/lib/utils'
 import type { Booking } from '@/lib/types'
 
+interface BookingWithLandlord extends Booking {
+  profiles?: { full_name: string }
+}
+
 export default function AdminBookingsPage() {
-  const [bookings, setBookings] = useState<Booking[]>([])
+  const [bookings, setBookings] = useState<BookingWithLandlord[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const supabase = createClient()
@@ -17,9 +21,15 @@ export default function AdminBookingsPage() {
     const fetchBookings = async () => {
       const { data } = await supabase
         .from('bookings')
-        .select('*, properties(*)')
+        .select('*, properties!inner(*, profiles!properties_landlord_id_fkey!left(full_name))')
         .order('created_at', { ascending: false })
-      if (data) setBookings(data)
+      if (data) {
+        const mapped = data.map((b: any) => ({
+          ...b,
+          profiles: b.properties?.profiles || null,
+        }))
+        setBookings(mapped)
+      }
       setLoading(false)
     }
     fetchBookings()
@@ -29,7 +39,9 @@ export default function AdminBookingsPage() {
     (b) =>
       b.guest_name.toLowerCase().includes(search.toLowerCase()) ||
       b.guest_email.toLowerCase().includes(search.toLowerCase()) ||
-      b.booking_reference.toLowerCase().includes(search.toLowerCase())
+      b.booking_reference.toLowerCase().includes(search.toLowerCase()) ||
+      (b.profiles?.full_name || '').toLowerCase().includes(search.toLowerCase()) ||
+      (b.properties?.title || '').toLowerCase().includes(search.toLowerCase())
   )
 
   if (loading) {
@@ -53,8 +65,8 @@ export default function AdminBookingsPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by name, email, or ref..."
-            className="pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-400/30 w-64"
+            placeholder="Search by name, email, ref, landlord..."
+            className="pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-400/30 w-72"
           />
         </div>
       </div>
@@ -67,6 +79,7 @@ export default function AdminBookingsPage() {
                 <th className="text-left px-4 py-3 font-medium text-gray-500">Booking Ref</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-500">Guest</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-500">Property</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-500">Landlord</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-500">Move-in</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-500">Amount</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-500">Date</th>
@@ -107,6 +120,14 @@ export default function AdminBookingsPage() {
                       <span className="text-xs text-gray-400">Unknown</span>
                     )}
                   </td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-1.5">
+                      <User className="w-3 h-3 text-gray-400" />
+                      <span className="text-xs text-gray-700 font-medium">
+                        {booking.profiles?.full_name || 'Unknown'}
+                      </span>
+                    </div>
+                  </td>
                   <td className="px-4 py-3 text-xs text-gray-600">
                     {new Date(booking.move_in_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                   </td>
@@ -129,7 +150,7 @@ export default function AdminBookingsPage() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-12 text-center text-gray-400">No bookings found</td>
+                  <td colSpan={8} className="px-4 py-12 text-center text-gray-400">No bookings found</td>
                 </tr>
               )}
             </tbody>

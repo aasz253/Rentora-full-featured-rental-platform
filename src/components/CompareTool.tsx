@@ -52,6 +52,10 @@ export default function CompareModal({ properties, onClose }: { properties: Prop
                       src={p.images?.[0] || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&q=60'}
                       alt=""
                       className="w-full h-32 object-cover rounded-xl mb-2"
+                      loading="lazy"
+                      decoding="async"
+                      width={400}
+                      height={128}
                     />
                     <p className="font-semibold text-gray-900 text-xs truncate">{p.title}</p>
                   </th>

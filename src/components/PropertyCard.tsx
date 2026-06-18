@@ -10,7 +10,7 @@ interface PropertyCardProps {
 }
 
 export default function PropertyCard({ property, featured }: PropertyCardProps) {
-  const image = property.images?.[0] || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80'
+  const image = property.images?.[0] || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&q=75'
 
   return (
     <a href={`/properties/${property.id}`} className="block">
@@ -22,8 +22,11 @@ export default function PropertyCard({ property, featured }: PropertyCardProps) 
           <img
             src={image}
             alt={property.title}
+            width={400}
+            height={224}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
             loading="lazy"
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 

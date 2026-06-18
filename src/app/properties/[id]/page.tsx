@@ -59,7 +59,7 @@ export default function PropertyDetailPage() {
 
   const images = property.images?.length > 0
     ? property.images
-    : ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=80']
+    : ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=75']
 
   return (
     <div className="min-h-screen bg-gray-50/50">
@@ -80,6 +80,10 @@ export default function PropertyDetailPage() {
                   src={images[currentImage]}
                   alt={property.title}
                   className="w-full h-full object-cover"
+                  width={800}
+                  height={450}
+                  fetchPriority="high"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               </div>
@@ -93,7 +97,7 @@ export default function PropertyDetailPage() {
                         i === currentImage ? 'border-purple-500' : 'border-transparent opacity-70 hover:opacity-100'
                       }`}
                     >
-                      <img src={img} alt="" className="w-full h-full object-cover" />
+                      <img src={img} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" width={80} height={64} />
                     </button>
                   ))}
                 </div>

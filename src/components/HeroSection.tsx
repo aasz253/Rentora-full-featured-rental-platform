@@ -5,8 +5,8 @@ import { ArrowDown, Search } from 'lucide-react'
 export default function HeroSection() {
   return (
     <section className="relative overflow-hidden">
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1920&q=80')] bg-cover bg-center" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/70" />
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1600&q=75')] bg-cover bg-center scale-105" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/50" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 relative">
         <div className="max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">

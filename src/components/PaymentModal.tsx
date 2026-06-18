@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react'
 import {
   Loader2, CheckCircle, XCircle, Smartphone, Wallet,
-  Building2, Copy, Check, ExternalLink, CreditCard,
+  Building2, Copy, Check,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase'
 import { formatPrice } from '@/lib/utils'
 import type { Property, BankTransferDetails } from '@/lib/types'
+import ReceiptCard from '@/components/ReceiptCard'
 
 type PaymentStep = 'select' | 'mpesa' | 'paypal' | 'bank' | 'processing' | 'success' | 'failed'
 
@@ -161,22 +162,27 @@ export default function PaymentModal({
 
   if (step === 'success') {
     return (
-      <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={onClose}>
-        <div className="bg-white rounded-2xl max-w-md w-full animate-scale-in p-6 text-center" onClick={(e) => e.stopPropagation()}>
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="w-8 h-8 text-green-600" />
+      <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto" onClick={onClose}>
+        <div className="bg-white rounded-2xl max-w-lg w-full animate-scale-in" onClick={(e) => e.stopPropagation()}>
+          <div className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <CheckCircle className="w-5 h-5 text-green-500" />
+              <h2 className="text-lg font-bold text-gray-900">Payment Successful!</h2>
+            </div>
+            <ReceiptCard
+              guestName={bookingData.guestName}
+              guestEmail={bookingData.guestEmail}
+              guestPhone={bookingData.guestPhone}
+              moveInDate={bookingData.moveInDate}
+              bookingRef={bookingRef}
+              property={property}
+              paymentMethod={method || undefined}
+              amount={amount}
+            />
+            <button onClick={onComplete} className="no-print w-full mt-4 gradient-bg text-white py-3 rounded-xl font-semibold hover:opacity-90">
+              Done
+            </button>
           </div>
-          <h2 className="text-xl font-bold text-gray-900 mb-1">Payment Successful!</h2>
-          <p className="text-sm text-gray-500 mb-4">Your booking is confirmed. A receipt has been generated.</p>
-          <div className="bg-gray-50 rounded-xl p-4 mb-4 text-left space-y-2 text-sm">
-            <div className="flex justify-between"><span className="text-gray-500">Booking Ref</span><span className="font-bold gradient-text">{bookingRef}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">Property</span><span>{property.title}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">Amount</span><span className="font-bold">{formatPrice(amount)}</span></div>
-            <div className="flex justify-between"><span className="text-gray-500">Method</span><span className="capitalize">{method?.replace('_', ' ') || 'Payment'}</span></div>
-          </div>
-          <button onClick={onComplete} className="w-full gradient-bg text-white py-3 rounded-xl font-semibold hover:opacity-90">
-            Done
-          </button>
         </div>
       </div>
     )

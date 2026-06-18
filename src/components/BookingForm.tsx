@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase'
 import { formatPrice, generateBookingReference } from '@/lib/utils'
 import type { Property } from '@/lib/types'
 import PaymentModal from '@/components/PaymentModal'
+import ReceiptCard from '@/components/ReceiptCard'
 
 interface BookingFormProps {
   property: Property
@@ -70,50 +71,32 @@ export default function BookingForm({ property, onClose }: BookingFormProps) {
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto" onClick={onClose}>
         <div className="bg-white rounded-2xl max-w-lg w-full animate-scale-in" onClick={(e) => e.stopPropagation()}>
-          <div className="gradient-bg p-6 rounded-t-2xl text-center">
-            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-              <CheckCircle className="w-8 h-8 text-white" />
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5 text-green-500" />
+                <h2 className="text-lg font-bold text-gray-900">Booking Confirmed!</h2>
+              </div>
+              <button onClick={onClose} className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors">
+                <X className="w-5 h-5 text-gray-400" />
+              </button>
             </div>
-            <h2 className="text-xl font-bold text-white">Booking Confirmed!</h2>
-            <p className="text-purple-200 text-sm mt-1">Your reservation has been successfully processed.</p>
-          </div>
-          <div className="p-6 space-y-4">
-            <div className="bg-purple-50 rounded-xl p-4 text-center">
-              <p className="text-xs text-gray-500 mb-1">Booking Reference</p>
-              <p className="text-2xl font-bold gradient-text tracking-wider">{bookingRef}</p>
+            <ReceiptCard
+              guestName={guestName}
+              guestEmail={guestEmail}
+              guestPhone={guestPhone}
+              moveInDate={moveInDate}
+              bookingRef={bookingRef}
+              property={property}
+              paymentMethod="card"
+            />
+            <div className="mt-4 text-center">
+              <p className="text-xs text-gray-400">A confirmation email has been sent to {guestEmail}</p>
             </div>
-            <div className="space-y-3">
-              <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-500">Property</span>
-                <span className="text-sm font-medium text-gray-900">{property.title}</span>
-              </div>
-              <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-500">Guest Name</span>
-                <span className="text-sm font-medium text-gray-900">{guestName}</span>
-              </div>
-              <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-500">Email</span>
-                <span className="text-sm font-medium text-gray-900">{guestEmail}</span>
-              </div>
-              <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-500">Phone</span>
-                <span className="text-sm font-medium text-gray-900">{guestPhone}</span>
-              </div>
-              <div className="flex justify-between py-2 border-b border-gray-100">
-                <span className="text-sm text-gray-500">Move-in Date</span>
-                <span className="text-sm font-medium text-gray-900">
-                  {new Date(moveInDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                </span>
-              </div>
-              <div className="flex justify-between py-2">
-                <span className="text-sm text-gray-500">Total Price</span>
-                <span className="text-lg font-bold text-purple-600">{formatPrice(property.price)}/mo</span>
-              </div>
-            </div>
-            <div className="bg-gray-50 rounded-xl p-3 text-center">
-              <p className="text-xs text-gray-500">A confirmation email has been sent to {guestEmail}</p>
-            </div>
-            <button onClick={onClose} className="w-full gradient-bg text-white py-3 rounded-xl font-semibold text-sm hover:opacity-90">
+            <button
+              onClick={onClose}
+              className="no-print w-full mt-4 gradient-bg text-white py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all"
+            >
               Done
             </button>
           </div>
