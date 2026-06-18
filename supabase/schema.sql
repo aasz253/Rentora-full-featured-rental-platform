@@ -32,7 +32,7 @@ CREATE POLICY "Admins update any" ON profiles FOR UPDATE USING (
 -- === PROPERTIES ===
 CREATE TABLE properties (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  landlord_id UUID REFERENCES profiles(id) NOT NULL,
+  landlord_id UUID REFERENCES profiles(id),
   title TEXT NOT NULL,
   description TEXT NOT NULL,
   property_type TEXT NOT NULL CHECK (property_type IN ('house','apartment','condo','studio','villa')),

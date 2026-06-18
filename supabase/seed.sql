@@ -13,7 +13,7 @@ INSERT INTO properties (id, landlord_id, title, description, property_type, pric
 VALUES
   (
     '00000000-0000-0000-0000-000000000001',
-    '00000000-0000-0000-0000-000000000000',
+    NULL,
     'Modern Downtown Loft',
     'Stunning modern loft in the heart of downtown. Floor-to-ceiling windows, exposed brick, and hardwood floors throughout. Walking distance to restaurants, shops, and public transit.',
     'apartment', 2500.00, '123 Main St', 'San Francisco', 'CA', 'San Francisco, CA',
@@ -28,7 +28,7 @@ VALUES
   ),
   (
     '00000000-0000-0000-0000-000000000002',
-    '00000000-0000-0000-0000-000000000000',
+    NULL,
     'Cozy Studio Apartment',
     'Charming studio perfect for young professionals. Recently renovated with modern finishes, quartz countertops, and stainless steel appliances. Pet-friendly building.',
     'studio', 1500.00, '456 Oak Ave', 'Austin', 'TX', 'Austin, TX',
@@ -42,7 +42,7 @@ VALUES
   ),
   (
     '00000000-0000-0000-0000-000000000003',
-    '00000000-0000-0000-0000-000000000000',
+    NULL,
     'Spacious Family Home',
     'Beautiful 4-bedroom home in a quiet suburban neighborhood with a large backyard, deck, and garden. Top-rated school district. Perfect for families.',
     'house', 3800.00, '789 Maple Dr', 'Denver', 'CO', 'Denver, CO',
@@ -57,7 +57,7 @@ VALUES
   ),
   (
     '00000000-0000-0000-0000-000000000004',
-    '00000000-0000-0000-0000-000000000000',
+    NULL,
     'Luxury Waterfront Villa',
     'Exquisite waterfront villa with panoramic ocean views. Private pool, outdoor kitchen, and direct beach access. The ultimate luxury rental experience.',
     'villa', 8500.00, '1 Beachfront Rd', 'Miami', 'FL', 'Miami, FL',
@@ -72,7 +72,7 @@ VALUES
   ),
   (
     '00000000-0000-0000-0000-000000000005',
-    '00000000-0000-0000-0000-000000000000',
+    NULL,
     'Urban Condo with Skyline View',
     'Sleek 2-bedroom condo on the 35th floor with breathtaking city skyline views. Building amenities include rooftop pool, concierge, and fitness center.',
     'condo', 3200.00, '500 Tower Blvd', 'New York', 'NY', 'New York, NY',
@@ -86,7 +86,7 @@ VALUES
   ),
   (
     '00000000-0000-0000-0000-000000000006',
-    '00000000-0000-0000-0000-000000000000',
+    NULL,
     'Charming Craftsman Bungalow',
     'Restored 1920s craftsman bungalow with original hardwood floors, built-in bookshelves, and a cozy fireplace. Large front porch with swing. Walking distance to downtown.',
     'house', 2200.00, '321 Elm St', 'Portland', 'OR', 'Portland, OR',
@@ -100,7 +100,7 @@ VALUES
   ),
   (
     '00000000-0000-0000-0000-000000000007',
-    '00000000-0000-0000-0000-000000000000',
+    NULL,
     'Tech Hub Live-Work Loft',
     'Industrial-chic live-work loft in the tech district. 16-foot ceilings, polished concrete floors, and a dedicated office nook. Ideal for remote workers.',
     'apartment', 2800.00, '888 Innovation Way', 'Seattle', 'WA', 'Seattle, WA',
@@ -114,7 +114,7 @@ VALUES
   ),
   (
     '00000000-0000-0000-0000-000000000008',
-    '00000000-0000-0000-0000-000000000000',
+    NULL,
     'Beachside Studio Retreat',
     'Quiet studio steps from the beach. Perfect for a seasonal getaway or remote work by the ocean. Recently updated with coastal-inspired decor.',
     'studio', 1800.00, '42 Shoreline Ave', 'Santa Monica', 'CA', 'Santa Monica, CA',
@@ -128,7 +128,7 @@ VALUES
   ),
   (
     '00000000-0000-0000-0000-000000000009',
-    '00000000-0000-0000-0000-000000000000',
+    NULL,
     'Mountain View Lodge',
     'Rustic mountain lodge with stunning views of the Rockies. Grand stone fireplace, gourmet kitchen, and hot tub on the deck. Perfect for ski season.',
     'house', 4500.00, '7 Summit Dr', 'Aspen', 'CO', 'Aspen, CO',
@@ -142,7 +142,7 @@ VALUES
   ),
   (
     '00000000-0000-0000-0000-000000000010',
-    '00000000-0000-0000-0000-000000000000',
+    NULL,
     'Affordable Mid-City Apartment',
     'Well-maintained 1-bedroom apartment in a convenient mid-city location. Close to public transit, grocery stores, and parks. Great starter home.',
     'apartment', 1200.00, '200 Central Ave', 'Chicago', 'IL', 'Chicago, IL',
@@ -156,7 +156,7 @@ VALUES
   ),
   (
     '00000000-0000-0000-0000-000000000011',
-    '00000000-0000-0000-0000-000000000000',
+    NULL,
     'Penthouse Suite - NYC',
     'Breathtaking penthouse in Manhattan with panoramic city views, private terrace, and top-of-the-line finishes. Rooftop access with pool and lounge.',
     'condo', 12000.00, '1 Park Ave', 'New York', 'NY', 'New York, NY',
@@ -171,7 +171,7 @@ VALUES
   ),
   (
     '00000000-0000-0000-0000-000000000012',
-    '00000000-0000-0000-0000-000000000000',
+    NULL,
     'Garden Level Studio',
     'Cozy garden-level studio with private entrance and small patio. Quiet neighborhood near university campus. Ideal for students or interns.',
     'studio', 950.00, '55 College Rd', 'Berkeley', 'CA', 'Berkeley, CA',
@@ -262,19 +262,5 @@ VALUES
   ('visitor-test-2', '/', NULL, 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0) Mobile/15E148 Safari/604.1'),
   ('visitor-test-2', '/properties', NULL, 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0) Mobile/15E148 Safari/604.1');
 
--- ============================================================
--- SAMPLE NOTIFICATIONS
--- ============================================================
-INSERT INTO notifications (user_id, type, title, message, is_read)
-VALUES
-  ('00000000-0000-0000-0000-000000000000', 'booking', 'New Booking Received', 'Sarah Johnson booked Beachside Studio Retreat (RENTORA-A1B2C3)', FALSE),
-  ('00000000-0000-0000-0000-000000000000', 'booking', 'Payment Completed', 'PayPal payment of $2,700 received for booking RENTORA-A1B2C3', FALSE),
-  ('00000000-0000-0000-0000-000000000000', 'review', 'New Review', 'Alex Turner left a 5-star review on Modern Downtown Loft', TRUE);
-
--- ============================================================
--- SAMPLE SAVED SEARCHES
--- ============================================================
-INSERT INTO saved_searches (user_id, search_params, email_alerts)
-VALUES
-  ('00000000-0000-0000-0000-000000000000', '{"location": "San Francisco", "minPrice": 2000, "maxPrice": 4000, "propertyType": "apartment"}', TRUE),
-  ('00000000-0000-0000-0000-000000000000', '{"location": "Denver", "minPrice": 3000, "maxPrice": 5000}', TRUE);
+-- SAMPLE NOTIFICATIONS & SAVED SEARCHES omitted for seed data
+-- They populate naturally when users interact with the app
