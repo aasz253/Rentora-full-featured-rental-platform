@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Building2, Mail, Lock, Eye, EyeOff, User, Phone, Loader2 } from 'lucide-react'
+import { Building2, Mail, Lock, Eye, EyeOff, User, Phone, Loader2, Shield, Users } from 'lucide-react'
+import type { UserRole } from '@/lib/types'
 import SocialLogin from '@/components/SocialLogin'
 import { createClient } from '@/lib/supabase'
 
@@ -13,14 +14,26 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [role, setRole] = useState<UserRole>('tenant')
+  const [adminCode, setAdminCode] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const supabase = createClient()
 
+  const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || 'admin123'
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+
+    const finalRole = role === 'admin' && adminCode !== ADMIN_SECRET ? 'tenant' : role
+
+    if (role === 'admin' && adminCode !== ADMIN_SECRET) {
+      setError('Invalid admin registration code')
+      return
+    }
+
     setLoading(true)
 
     const { data: authData, error: authError } = await supabase.auth.signUp({
@@ -39,7 +52,7 @@ export default function RegisterPage() {
         id: authData.user.id,
         full_name: fullName,
         phone,
-        role: 'landlord',
+        role: finalRole,
       })
 
       if (profileError) {
@@ -49,7 +62,7 @@ export default function RegisterPage() {
       }
     }
 
-    router.push('/dashboard')
+    router.push(finalRole === 'admin' ? '/admin' : finalRole === 'landlord' ? '/dashboard' : '/')
     router.refresh()
   }
 
@@ -60,14 +73,55 @@ export default function RegisterPage() {
           <div className="gradient-bg p-3 rounded-2xl w-fit mx-auto mb-4">
             <Building2 className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Become a Landlord</h1>
-          <p className="text-gray-500 text-sm mt-1">List your properties and reach thousands of tenants</p>
+          <h1 className="text-2xl font-bold text-gray-900">Create Account</h1>
+          <p className="text-gray-500 text-sm mt-1">Join Rentora as a tenant or landlord</p>
         </div>
 
         <form onSubmit={handleRegister} className="bg-white rounded-2xl shadow-lg shadow-purple-100/50 border border-purple-50 p-6 sm:p-8 space-y-5">
+          <div className="grid grid-cols-2 gap-2">
+            <button type="button" onClick={() => { setRole('tenant'); setAdminCode('') }}
+              className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-all border ${
+                role === 'tenant' ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-gray-600 border-gray-200 hover:border-purple-300'
+              }`}>
+              <Users className="w-4 h-4" />
+              Tenant
+            </button>
+            <button type="button" onClick={() => { setRole('landlord'); setAdminCode('') }}
+              className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-medium transition-all border ${
+                role === 'landlord' ? 'bg-purple-600 text-white border-purple-600' : 'bg-white text-gray-600 border-gray-200 hover:border-purple-300'
+              }`}>
+              <Building2 className="w-4 h-4" />
+              Landlord
+            </button>
+          </div>
+          {role === 'admin' && (
+            <button type="button" onClick={() => setRole('landlord')}
+              className="text-xs text-purple-600 hover:text-purple-700 font-medium text-center w-full">
+              Not an admin? Register as landlord instead
+            </button>
+          )}
+          <div className="text-center">
+            <button type="button" onClick={() => setRole(role === 'admin' ? 'landlord' : 'admin')}
+              className="text-xs text-gray-400 hover:text-gray-600 transition-colors">
+              {role === 'admin' ? 'Switch to regular registration' : 'Admin registration'}
+            </button>
+          </div>
+
           {error && (
             <div className="bg-red-50 text-red-600 text-sm p-3 rounded-xl border border-red-100">
               {error}
+            </div>
+          )}
+
+          {role === 'admin' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">Admin Registration Code</label>
+              <div className="relative">
+                <Shield className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input type="password" value={adminCode} onChange={e => setAdminCode(e.target.value)}
+                  placeholder="Enter admin secret code"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-400/30 focus:border-purple-400 transition-all" />
+              </div>
             </div>
           )}
 

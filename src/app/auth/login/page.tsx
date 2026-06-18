@@ -66,7 +66,7 @@ export default function LoginPage() {
             <Building2 className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
-          <p className="text-gray-500 text-sm mt-1">Sign in to your landlord dashboard</p>
+          <p className="text-gray-500 text-sm mt-1">Sign in to your account</p>
         </div>
 
         <form onSubmit={handleLogin} className="bg-white rounded-2xl shadow-lg shadow-purple-100/50 border border-purple-50 p-6 sm:p-8 space-y-5">

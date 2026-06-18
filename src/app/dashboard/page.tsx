@@ -88,7 +88,7 @@ export default function DashboardPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            Welcome, {profile?.full_name?.split(' ')[0] || 'Landlord'}
+            Welcome, {profile?.full_name?.split(' ')[0] || profile?.role || 'User'}
           </h1>
           <p className="text-gray-500 text-sm mt-1">Manage your rental properties</p>
         </div>
